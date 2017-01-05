@@ -1,4 +1,4 @@
 # -*- coding: utf-8 -*-
 
 from . import purchase_order
-from . import account_invoice_line
+from . import account_invoice
