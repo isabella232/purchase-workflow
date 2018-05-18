@@ -7,7 +7,7 @@ Purchase Line Procurement Group
 ===============================
 
 This module changes the way procurements generate purchase order lines.
-If some procurements are runned for the same products and locations, but have
+If some procurements are run for the same products and locations, but have
 different procurement groups, these won't be merged in the same purchase order
 line and will instead generate a purchase order line per procurement group.
 
@@ -22,7 +22,7 @@ Bug Tracker
 ===========
 
 Bugs are tracked on `GitHub Issues
-<https://github.com/OCA/purchase_workflow/issues>`_. In case of trouble, please
+<https://github.com/OCA/purchase-workflow/issues>`_. In case of trouble, please
 check there if your issue has already been reported. If you spotted it first,
 help us smash it by providing detailed and welcomed feedback.
 
