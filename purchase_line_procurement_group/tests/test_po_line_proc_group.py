@@ -38,8 +38,8 @@ class TestPOLineProcurementGroup(SavepointCase):
                 })],
             }).product_variant_ids
 
-        warehouse = cls.env.ref('stock.warehouse0')
-        warehouse.write({'reception_steps': 'three_steps'})
+        cls.warehouse = cls.env.ref('stock.warehouse0')
+        cls.warehouse.write({'reception_steps': 'three_steps'})
         wh2 = cls.env['stock.warehouse'].create({
             'name': 'WH2',
             'code': 'WH2',
@@ -57,7 +57,7 @@ class TestPOLineProcurementGroup(SavepointCase):
                 'name': 'WH>WH2',
                 'action': 'move',
                 'location_id': wh2.lot_stock_id.id,
-                'location_src_id': warehouse.lot_stock_id.id,
+                'location_src_id': cls.warehouse.lot_stock_id.id,
                 'procure_method': 'make_to_order',
                 'picking_type_id': cls.env.ref(
                     'stock.picking_type_internal').id,
@@ -69,7 +69,7 @@ class TestPOLineProcurementGroup(SavepointCase):
         cls.lighter.write({
             'route_ids': [(4, wh_wh2_route.id)]
         })
-        _create_orderpoint(cls.lighter, 15, 30, warehouse.lot_stock_id)
+        _create_orderpoint(cls.lighter, 15, 30, cls.warehouse.lot_stock_id)
         _create_orderpoint(cls.lighter, 10, 20, wh2.lot_stock_id)
 
         # Force parent store computation after creation of WH2 because location
@@ -87,3 +87,15 @@ class TestPOLineProcurementGroup(SavepointCase):
                 self.assertAlmostEqual(line.product_qty, 20)
             else:
                 self.assertAlmostEqual(line.product_qty, 30)
+        po.button_confirm()
+        input_moves = self.env['stock.move'].search([
+            ('product_id', '=', self.lighter.id),
+            ('location_dest_id', '=', self.warehouse.wh_input_stock_loc_id.id)
+        ])
+        self.assertEqual(len(input_moves), 2)
+        for move in input_moves:
+            self.assertEqual(move.product_id, self.lighter)
+            if move.group_id == self.wh_wh2_pg:
+                self.assertAlmostEqual(move.product_uom_qty, 20.0)
+            else:
+                self.assertAlmostEqual(move.product_uom_qty, 30.0)
