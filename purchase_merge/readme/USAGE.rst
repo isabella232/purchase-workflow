@@ -1,3 +1,3 @@
 To use this module, you need to:
 
-#. Merge purchase order with required criterion's
+#. Merge purchase order with required criterions
