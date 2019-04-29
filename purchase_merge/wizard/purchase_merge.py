@@ -26,7 +26,7 @@ class MergePurchaseAutomatic(models.TransientModel):
     def default_get(self, fields_list):
         res = super(MergePurchaseAutomatic, self).default_get(fields_list)
         active_ids = self.env.context.get('active_ids')
-        purchase_orders = self.purchase_ids.search([('id', 'in', active_ids)])
+        purchase_orders = self.purchase_ids.browse(active_ids)
         self._check_all_values(purchase_orders)
         if self.env.context.get('active_model') == 'purchase.order' and \
                 len(active_ids) >= 1:
