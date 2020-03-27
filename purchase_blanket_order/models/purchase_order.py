@@ -1,4 +1,4 @@
-# Copyright (C) 2018 Eficent Business and IT Consulting Services S.L.
+# Copyright (C) 2018 ForgeFlow S.L. (https://www.forgeflow.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 from datetime import date, timedelta
 
@@ -22,7 +22,6 @@ class PurchaseOrder(models.Model):
             line.blanket_order_line.remaining_qty < 0.0 for line in self.order_line
         )
 
-    @api.multi
     def button_confirm(self):
         res = super(PurchaseOrder, self).button_confirm()
         for order in self:
@@ -91,7 +90,6 @@ class PurchaseOrderLine(models.Model):
         filters = self._get_eligible_bo_lines_domain(base_qty)
         return self.env["purchase.blanket.order.line"].search(filters)
 
-    @api.multi
     def get_assigned_bo_line(self):
         self.ensure_one()
         eligible_bo_lines = self._get_eligible_bo_lines()
@@ -144,9 +142,7 @@ class PurchaseOrderLine(models.Model):
     @api.constrains("date_planned")
     def check_date_planned(self):
         for line in self:
-            date_planned = fields.Date.to_string(
-                fields.Date.from_string(self.date_planned)
-            )
+            date_planned = fields.Date.from_string(self.date_planned)
             if (
                 line.blanket_order_line
                 and line.blanket_order_line.date_schedule
