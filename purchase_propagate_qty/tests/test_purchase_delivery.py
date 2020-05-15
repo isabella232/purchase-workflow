@@ -5,6 +5,7 @@
 from odoo.tests.common import SavepointCase
 from odoo.exceptions import UserError
 
+
 class TestQtyUpdate(SavepointCase):
     @classmethod
     def setUpClass(cls):

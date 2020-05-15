@@ -12,6 +12,11 @@ class PurchaseOrderLine(models.Model):
     @api.multi
     def write(self, values):
         res = super().write(values)
+        if 'product_qty' in values or 'product_uom' in values:
+            self._propagage_qty_to_moves()
+        return res
+
+    def _propagage_qty_to_moves(self):
         for line in self:
             if line.state != 'purchase':
                 continue
@@ -25,4 +30,3 @@ class PurchaseOrderLine(models.Model):
                         move.product_uom_qty, line.product_uom.rounding
                 ):
                     move._action_cancel()
-        return res
