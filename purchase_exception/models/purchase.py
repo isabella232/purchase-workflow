@@ -21,22 +21,6 @@ class PurchaseOrder(models.Model):
         return True
 
     @api.model
-    def _exception_rule_eval_context(self, rec):
-        # TODO remove in v13
-        # We keep this only for backward compatibility
-        res = super()._exception_rule_eval_context(rec)
-        if res.get("purchase"):
-            logger.warning(
-                """
-                For a full compatibility with future versions of this module,
-                please use 'self' instead of 'purchase' in your
-                custom exceptions rules.
-                """
-            )
-        res["purchase"] = rec
-        return res
-
-    @api.model
     def _reverse_field(self):
         return "purchase_ids"
 
@@ -57,13 +41,11 @@ class PurchaseOrder(models.Model):
         if self.state == "purchase":
             self.ignore_exception = False
 
-    @api.multi
     def button_confirm(self):
         if self.detect_exceptions() and not self.ignore_exception:
             return self._popup_exceptions()
         return super(PurchaseOrder, self).button_confirm()
 
-    @api.multi
     def button_draft(self):
         res = super(PurchaseOrder, self).button_draft()
         for order in self:

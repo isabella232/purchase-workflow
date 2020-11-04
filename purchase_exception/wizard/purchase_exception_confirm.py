@@ -2,7 +2,7 @@
 # Mourad EL HADJ MIMOUNE <mourad.elhadj.mimoune@akretion.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class PurchaseExceptionConfirm(models.TransientModel):
@@ -11,7 +11,6 @@ class PurchaseExceptionConfirm(models.TransientModel):
 
     related_model_id = fields.Many2one("purchase.order", "Purchase")
 
-    @api.multi
     def action_confirm(self):
         self.ensure_one()
         if self.ignore:
