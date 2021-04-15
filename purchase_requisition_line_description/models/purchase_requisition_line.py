@@ -12,8 +12,8 @@ class PurchaseRequisitionLine(models.Model):
     @api.onchange('product_id')
     def _onchange_product_id(self):
         # to format name into: "[product_code] product_name"
+        res = super()._onchange_product_id()
         desc = ""
-        res = super(PurchaseRequisitionLine, self)._onchange_product_id()
         if self.product_id:
             product_lang = self.product_id.with_context(
                 lang=self.requisition_id.purchase_ids.partner_id.lang,
