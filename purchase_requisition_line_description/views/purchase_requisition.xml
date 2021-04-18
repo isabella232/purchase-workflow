@@ -5,10 +5,10 @@
       <field name="model">purchase.requisition</field>
       <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
       <field name="arch" type="xml">
-        <xpath expr="//notebook/page/field[@name='line_ids']/tree/field[@name='product_id']" position="attributes">
+        <xpath expr="//field[@name='product_id']" position="attributes">
           <attribute name="context">{'vendor_data_search':True}</attribute>
         </xpath>
-        <xpath expr="//notebook/page/field[@name='line_ids']/tree/field[@name='product_id']" position="after">
+        <xpath expr="//field[@name='product_id']" position="after">
           <field name="name" />
         </xpath>       
       </field>

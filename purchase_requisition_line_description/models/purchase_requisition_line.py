@@ -7,7 +7,7 @@ from odoo import api, fields, models
 class PurchaseRequisitionLine(models.Model):
     _inherit = "purchase.requisition.line"
 
-    name = fields.Text()
+    name = fields.Text(string="Description")
 
     @api.onchange('product_id')
     def _onchange_product_id(self):

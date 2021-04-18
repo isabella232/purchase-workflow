@@ -12,22 +12,17 @@ class ProductProduct(models.Model):
         self, name, args=None, operator='ilike', limit=100, name_get_uid=None
     ):
         if name and self.env.context.get('vendor_data_search'):
-            positive_operators = ['=', 'ilike', '=ilike', 'like', '=like']
-            product_ids = []
-            if operator in positive_operators:
-                product_ids = self._search(
-                    [('seller_ids.product_code', '=', name)] + args,
+            product_ids = self._search(
+                    [('name', operator, name)] + args,
                     limit=limit,
                     access_rights_uid=name_get_uid,
                 )
-                if not product_ids:
-                    product_ids = self._search(
-                        [('seller_ids.product_name', '=', name)] + args,
-                        limit=limit,
-                        access_rights_uid=name_get_uid,
-                    )
-        else:
-            product_ids = self._search(
-                args, limit=limit, access_rights_uid=name_get_uid
-            )
-        return self.browse(product_ids).name_get()
+            positive_operators = ['=', 'ilike', '=ilike', 'like', '=like']
+            if operator in positive_operators:
+                product_ids += self._search(
+                    ['|',('seller_ids.product_code', operator, name),('seller_ids.product_name', operator, name)] + args,
+                    limit=limit,
+                    access_rights_uid=name_get_uid,
+                )
+            return self.browse(product_ids).name_get()
+        return super()._name_search(name, args, operator, limit, name_get_uid)
