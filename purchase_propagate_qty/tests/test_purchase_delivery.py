@@ -140,12 +140,13 @@ class TestQtyUpdate(SavepointCase):
         line1.write({"product_qty": 50})
         self.assertEqual(moves.mapped("product_uom_qty"), [38.0, 12.0])
         # We should not be able to set a qty < to 12, since 12 products are reserved
-        exception_regex = (
-            r"You cannot remove more that what remains to be done.\n"
-            r"Max removable quantity 38.0."
+        exception_text = (
+            "You cannot remove more that what remains to be done.\n"
+            "Max removable quantity 38.0."
         )
-        with self.assertRaisesRegex(UserError, exception_regex):
+        with self.assertRaises(UserError) as err:
             line1.write({"product_qty": 11})
+        self.assertEqual(err.exception.name, exception_text)
         # with 12, move1 should be cancelled
         line1.write({"product_qty": 12})
         self.assertEqual(move1.product_uom_qty, 0.0)
