@@ -131,7 +131,7 @@ class StockRule(models.Model):
         same_product_date_request_line = pr.line_ids.filtered_domain(
             [
                 ("product_id", "=", request_line_data["product_id"]),
-                ("date_required", "=", request_line_data["date_required"]),
+                ("date_required", "=", request_line_data["date_required"].date()),
             ],
         )
         if same_product_date_request_line:
