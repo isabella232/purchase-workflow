@@ -116,7 +116,7 @@ class TestPurchaseRequestProcurement(common.SavepointCase):
 
     @freeze_time("2022-03-15 01:00:00")
     def test_duplicated_purchase_request(self):
-        self.assertEqual(self.env["purchase.request"].search_count([]),0)
+        self.assertEqual(self.env["purchase.request"].search_count([]), 0)
         has_route = self.procurement_group_run(
             "Test Purchase Request Single Line",
             "Test Purchase Request Single Line",
@@ -146,6 +146,6 @@ class TestPurchaseRequestProcurement(common.SavepointCase):
         self.assertTrue(has_route)
         self.env["procurement.group"].run_scheduler()
         # make sure no new PR is created
-        self.assertEqual(self.env["purchase.request"].search_count([]),1)
+        self.assertEqual(self.env["purchase.request"].search_count([]), 1)
         self.assertEqual(len(pr.line_ids), 1)
         self.assertEqual(prl.product_qty, 9)
