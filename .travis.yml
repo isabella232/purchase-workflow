@@ -60,3 +60,7 @@ after_success:
 branches:
   except:
     - /^merge-branch-.*$/
+
+branches:
+  except:
+    - /^merge-branch-.*$/
