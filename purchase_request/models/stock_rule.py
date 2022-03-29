@@ -138,6 +138,11 @@ class StockRule(models.Model):
             [
                 ("product_id", "=", request_line_data["product_id"]),
                 ("date_required", "=", request_line_data["date_required"].date()),
+                (
+                    "purchase_state",
+                    "=",
+                    False,
+                ),  # avoid updating if there is RFQ or PO linked
             ],
         )
         if same_product_date_request_line:
