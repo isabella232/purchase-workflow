@@ -54,9 +54,9 @@ class StockRule(models.Model):
         :return: False
         """
         domain = (
+            ("state", "in", ("draft", "to_approve", "approved")),
             ("picking_type_id", "=", self.picking_type_id.id),
             ("company_id", "=", values["company_id"].id),
-            ("date_start", "=", datetime.today().date()),
         )
         gpo = self.group_propagation_option
         group_id = (
