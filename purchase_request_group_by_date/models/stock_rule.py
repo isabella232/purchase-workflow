@@ -18,11 +18,7 @@ class StockRule(models.Model):
     def _make_pr_get_domain(self, values):
         domain = super()._make_pr_get_domain(values)
         if self.company_group_purchase_request:
-            domain = (
-                ("picking_type_id", "=", self.picking_type_id.id),
-                ("company_id", "=", values["company_id"].id),
-                ("date_start", "=", datetime.today().date()),
-            )
+            domain += ("date_start", "=", datetime.today().date())
             gpo = self.group_propagation_option
             group_id = (
                 (gpo == "fixed" and self.group_id.id)

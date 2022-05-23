@@ -25,7 +25,10 @@ class TestPurchaseRequestGroupBy(common.SavepointCase):
         self.product_2.purchase_request = True
         self.uom_unit = self.env.ref("uom.product_uom_unit")
         self.company_id = self.env.ref("base.main_company")
-        self.company_id.group_purchase_request = True
+        self.user_admin = self.env.ref("base.user_admin")
+        self.env["res.config.settings"].with_user(self.user_admin).create(
+            {"company_group_purchase_request": True}
+        )
 
         # Create UoM
         self.uom_ten = self.product_uom_model.create(
